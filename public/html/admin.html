@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事投稿</title>
+</head>
+<body>
+    <h1>記事を投稿する</h1>
+    <form id="articleForm">
+        <label for="title">タイトル:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="content">内容:</label><br>
+        <textarea id="content" name="content" rows="5" cols="40" required></textarea><br>
+
+        <button type="submit">投稿</button>
+    </form>
+
+    <script>
+        document.getElementById('articleForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            fetch('/admin/article', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('記事が投稿されました!');
+                document.getElementById('articleForm').reset();
+            })
+            .catch(error => {
+                alert('エラーが発生しました: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

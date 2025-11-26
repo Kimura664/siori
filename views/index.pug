@@ -1,0 +1,38 @@
+doctype html
+html(lang="ja")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title しおりの紹介ページ
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    // サイドバー
+    aside.sidebar
+      h2 しおりの種類
+      nav
+        ul
+          each tag in tags
+            li
+              a(href=`/tag/${tag.id}`) #{tag.name || "なし"}
+
+      // キリ番セクション
+      .sidebar-section
+        h2 キリ番
+        p 次のキリ番： 
+          strong 100
+
+    // メインコンテンツ
+    .content
+      header
+        h1 美しいしおりの紹介
+        p あなたの読書体験を彩る、美しいしおりたちをご紹介します。
+
+      main
+        each b in bookmarks
+          section.bookmark
+            img(src=b.image_url, alt=b.title)
+            h2 #{b.title}
+            p #{b.description}
+
+      footer
+        p &copy; 2024 しおりの紹介ページ

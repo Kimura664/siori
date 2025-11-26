@@ -1,18 +1,37 @@
-const express = require('express');
+import express from "express";
+import { db } from "./DB/DB.js";
+
 const app = express();
 
-app.use(express.json());
+// Pug設定
+app.set("view engine", "pug");
+app.set("views", "./views");
 
-// 確認用 API
-app.get("/", (req, res) => {
-  res.json({ message: "Server is running!" });
+// public 配下を静的ファイルとして公開
+app.use(express.static("public"));
+
+// ルート
+app.get("/", async (req, res) => {
+  try {
+    // しおり一覧
+    const [bookmarks] = await db.query(`
+      SELECT b.id, b.title, b.description, b.image_url, t.name AS tag_name
+      FROM bookmarks b
+      LEFT JOIN tags t ON b.tag_id = t.id
+      WHERE b.delete_flag = 0
+      ORDER BY b.id DESC
+    `);
+
+    // タグ一覧
+    let [tags] = await db.query(`SELECT id, name FROM tags ORDER BY name`);
+    if (!tags) tags = [];
+
+    res.render("index", { bookmarks, tags });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("サーバーエラー");
+  }
 });
 
-// データを送ってもらうAPI（例）
-app.post("/send", (req, res) => {
-  const data = req.body;
-  res.json({ received: data });
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log("Running on " + port));
+// サーバー起動
+app.listen(3000, () => console.log("Server running at http://localhost:3000"));
