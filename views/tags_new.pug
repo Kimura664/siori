@@ -1,0 +1,10 @@
+extends ../layout.pug
+
+block content
+  h1 新しいタグを追加
+
+  form(method="POST", action="/admin/tags/add")
+    label(for="name") タグ名
+    input(type="text", name="name", id="name" required)
+    br
+    button(type="submit") 追加

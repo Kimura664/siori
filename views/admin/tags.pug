@@ -1,0 +1,19 @@
+extends ../layout.pug
+
+block content
+  h1 タグ一覧
+
+  a(href="/admin/tags/new") 新しいタグを追加
+
+  table
+    tr
+      th ID
+      th タグ名
+      th 操作
+    each tag in tags
+      tr
+        td= tag.id
+        td= tag.name
+        td
+          form(method="POST", action=`/admin/tags/delete/${tag.id}`)
+            button(type="submit") 削除

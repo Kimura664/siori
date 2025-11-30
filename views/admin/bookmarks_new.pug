@@ -1,0 +1,26 @@
+extends ../layout.pug
+
+block content
+  h1 新しいしおりを追加
+
+  form(method="POST", action="/admin/bookmarks/add", enctype="multipart/form-data")
+    label(for="title") タイトル
+    input(type="text", name="title", id="title" required)
+    br
+
+    label(for="description") 説明
+    textarea(name="description", id="description")
+    br
+
+    label(for="tag_id") タグ
+    select(name="tag_id")
+      option(value="") -- 選択なし --
+      each tag in tags
+        option(value=tag.id)= tag.name
+    br
+
+    label(for="image") 画像
+    input(type="file", name="image", id="image" accept="image/*")
+    br
+
+    button(type="submit") 追加

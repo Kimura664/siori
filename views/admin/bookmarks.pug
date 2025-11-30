@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title しおり管理
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    h1 しおり管理
+    a(href="/admin") ← 管理トップ戻る
+    br
+    a(href="/admin/bookmarks/new") + しおりを追加
+    hr
+
+    each b in bookmarks
+      .list2
+        img(src=b.image_url, width="120")
+        p タイトル: #{b.title}
+        p タグ: #{b.tag_name || "なし"}
